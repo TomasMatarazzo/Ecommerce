@@ -12,6 +12,7 @@ app.use(bp.urlencoded({ extended: true }))
 app.use('/api/products',productsRouter);
 app.use('/api/carrito',carritosRouter);
 
+
 app.get('/', (req, res) => {
     res.send('hola')
   })
