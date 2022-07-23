@@ -16,7 +16,7 @@ exports.newCarrito = async (req,res)=>{
     await db.addElement(carrito);
     let cant = await db.getAll();
     cant = cant.length - 1;
-    res.send(" El id del producto nuevo es " + cant);
+    res.status(200).json({id:cant});
 }
 
 exports.showCarrito = async (req,res)=>{
@@ -26,7 +26,7 @@ exports.showCarrito = async (req,res)=>{
 exports.productDeleteById = async(req,res) =>{
     const id = req.params.id;
     await db.deleteById(id);
-    res.send("Se borro el carrito con el id " + id);
+    res.status(200).json({message:"Se borro el carrito"});
 }
 
 exports.showProductFromCarrito = async (req,res) =>{
@@ -46,7 +46,7 @@ exports.newProductFromCarrito = async (req,res) =>{
     const carrito = await db.getById(id);
     carrito.products.push(product);
     await db.updateById(id,carrito);
-    res.send("Se cargo el nuevo producto");
+    res.status(200).json({message:"Se cargo el nuevo producto en el carrito"});
 }
 
 exports.updateProductFromCarrito = async(req,res) =>{
@@ -55,7 +55,7 @@ exports.updateProductFromCarrito = async(req,res) =>{
     const { name,description,code,url,price,stock } = req.body;
     const product = new Product(name,description,code,url,price,stock);
     await db.updateById(id,product);
-    res.send("Se actualizo el producto")
+    res.status(200).json({message:"Se actualizo el producto en el carrito"});
 }
 
 exports.deleteProductFromCarrito = async(req,res) =>{
@@ -64,6 +64,6 @@ exports.deleteProductFromCarrito = async(req,res) =>{
     const carrito = await db.getById(idCarrito);
     carrito.products = carrito.products.filter( (product) => product.id != idProducto);
     await db.updateById(idCarrito,carrito);
-    res.send("Se elimino el producto dentro del carrito")
+    res.status(200).json({message:"Se elimino el producto dentro del carrito"});
 }
 
