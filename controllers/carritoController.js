@@ -11,7 +11,7 @@ var path = require('path');
 
 const db = new ContenedorFirebase();
 
-exports.newCarrito_POST = async (req,res)=>{
+exports.newCarrito = async (req,res)=>{
     const carrito = new Carrito();
     await db.addElement(carrito);
     let cant = await db.getAll();
@@ -19,17 +19,17 @@ exports.newCarrito_POST = async (req,res)=>{
     res.send(" El id del producto nuevo es " + cant);
 }
 
-exports.showCarrito_GET = async (req,res)=>{
+exports.showCarrito = async (req,res)=>{
     res.send(await db.getAll())
 }
 
-exports.product_deleteById_DELETE = async(req,res) =>{
+exports.productDeleteById = async(req,res) =>{
     const id = req.params.id;
     await db.deleteById(id);
     res.send("Se borro el carrito con el id " + id);
 }
 
-exports.carrito_productos_GET = async (req,res) =>{
+exports.showProductFromCarrito = async (req,res) =>{
     // agarra un carrito y te devuelvo los productos
     const id =req.params.id;
     console.log(id);
@@ -38,7 +38,7 @@ exports.carrito_productos_GET = async (req,res) =>{
     res.send(carrito.products);
 }
 
-exports.carrito_productos_POST = async (req,res) =>{
+exports.newProductFromCarrito = async (req,res) =>{
     //falta validacion;
     const id = req.params.id;
     const { name,description,code,url,price,stock } = req.body;
@@ -49,7 +49,7 @@ exports.carrito_productos_POST = async (req,res) =>{
     res.send("Se cargo el nuevo producto");
 }
 
-exports.carrito_update_PUT = async(req,res) =>{
+exports.updateProductFromCarrito = async(req,res) =>{
     //falta validacion
     const id = req.params.id;
     const { name,description,code,url,price,stock } = req.body;
@@ -58,7 +58,7 @@ exports.carrito_update_PUT = async(req,res) =>{
     res.send("Se actualizo el producto")
 }
 
-exports.carrito_product_deleteById_DELETE = async(req,res) =>{
+exports.deleteProductFromCarrito = async(req,res) =>{
     const idCarrito = req.params.id;
     const idProducto = req.params.idProduct;
     const carrito = await db.getById(idCarrito);

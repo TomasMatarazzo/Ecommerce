@@ -8,19 +8,19 @@ var path = require('path');
 
 const db = new DAOProductos('a');
 
-exports.product_list_GET = async (req,res)=>{
+exports.getProducts = async (req,res)=>{
     const products = await db.getAll();
     console.log(products)
     res.send(products);
 }
 
-exports.product_getById_GET = async (req,res) =>{
+exports.getProductById = async (req,res) =>{
     const id = req.params.id;
     const product = await db.getById(id);
     res.send(product)
 }
 
-exports.product_add_POST = async (req,res) =>{
+exports.addProduct = async (req,res) =>{
     //falta validacion;
     const { name,description,code,url,price,stock } = req.body;
     const product = new Product(name,description,code,url,price,stock);
@@ -29,7 +29,7 @@ exports.product_add_POST = async (req,res) =>{
     res.send("Se cargo el nuevo producto");
 }
 
-exports.product_update_PUT = async(req,res) =>{
+exports.updateProduct = async(req,res) =>{
     //falta validacion
     const id = req.params.id;
     const { name,description,code,url,price,stock } = req.body;
@@ -40,7 +40,7 @@ exports.product_update_PUT = async(req,res) =>{
     // paso nuevo objecto como parametro y lo agrego;
 }
 
-exports.product_deleteById_DELETE = async(req,res) =>{
+exports.deleteProduct = async(req,res) =>{
     const id = req.params.id;
     await db.deleteBy(id);
     res.send("Se borro el producto");
