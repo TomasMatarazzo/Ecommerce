@@ -9,6 +9,7 @@ var path = require('path');
 const db = new DAOProductos('a');
 
 exports.getProducts = async (req,res)=>{
+    console.log('nashe')
     const products = await db.getAll();
     console.log(products)
     res.status(200).send(products);
@@ -43,6 +44,6 @@ exports.updateProduct = async(req,res) =>{
 exports.deleteProduct = async(req,res) =>{
     const id = req.params.id;
     await db.deleteBy(id);
-    res.status(201).json({message:"Se borro el producto"});
+    res.status(200).json({message:"Se borro el producto"});
     // paso el id como parametro y lo borro a su puta madre
 }

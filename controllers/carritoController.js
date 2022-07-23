@@ -20,7 +20,7 @@ exports.newCarrito = async (req,res)=>{
 }
 
 exports.showCarrito = async (req,res)=>{
-    res.send(await db.getAll())
+    res.status(200).send(await db.getAll())
 }
 
 exports.productDeleteById = async(req,res) =>{
@@ -35,7 +35,7 @@ exports.showProductFromCarrito = async (req,res) =>{
     console.log(id);
     const carrito = await db.getById(id
         );
-    res.send(carrito.products);
+    res.status(200).send(carrito.products);
 }
 
 exports.newProductFromCarrito = async (req,res) =>{

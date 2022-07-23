@@ -16,6 +16,10 @@ app.use('/api/carrito',carritosRouter);
 app.get('/', (req, res) => {
     res.send('hola')
   })
+
+// Error 404
+
+
   
 app.listen(PORT, () => {
     console.log(`app listening on port ${PORT}`)
