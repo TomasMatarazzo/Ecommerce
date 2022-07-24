@@ -1,14 +1,12 @@
 var admin = require("firebase-admin");
-var serviceAccount = require("../ecommerce-be1d1-firebase-adminsdk-gyi0f-9019de578c.json");
-
 // Contenedor que agrega documentos de tipo producto a la base de datos pasada como parametro
 
 class ContenedorFirebase{
 
-    constructor(){
+    constructor(ServiceAccount){
 
         admin.initializeApp({
-          credential: admin.credential.cert(serviceAccount)
+          credential: admin.credential.cert(ServiceAccount)
         });
 
         this.db = admin.firestore()

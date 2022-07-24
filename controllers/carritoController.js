@@ -5,7 +5,7 @@
 const Persistencia = require('../models/persistencia.js');
 const Carrito = require('../models/carrito.js');
 const Product = require('../models/product.js');
-const ContenedorFirebase = require('../contenedores/ContenedorFirebase.js')
+const ContenedorFirebase = require('../daos/DAOCarrito')
 
 var path = require('path');
 
