@@ -17,24 +17,20 @@ class ContenedorFirebase{
         // tengo en cuenta el caso de que es el primer elemento del archivo
         try{
             await this.collection.add(o);
-            console.log('se creo')
         }
         catch(e){
-            console.log(e)
+            throw new Error()
         }
     }
 
-
     
     async getById(id){
-        try{
             const doc = await this.collection.doc(id).get()
+            if (doc.data() == undefined){
+                throw new Error()
+            }
             return {id,...doc.data()}
-        }
-        catch(e){
-            console.log(e)
-            return 
-        }
+
     }
 
    async updateById(id , o){
@@ -67,15 +63,20 @@ class ContenedorFirebase{
             await this.collection.doc(id).delete()
         }
         catch(e){
-            console.log(e)
+            throw new Error()
         }
     }
 
     async deleteAll(){
-        const elem = await this.collection.get()
-        elem.forEach((doc)=>{
-            doc.ref.delete()
-        })
+        try{
+            const elem = await this.collection.get()
+            elem.forEach((doc)=>{
+                doc.ref.delete()
+            })
+        }
+        catch(e){
+            throw new Error()
+        }
 
     }
 }

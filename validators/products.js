@@ -2,7 +2,7 @@ const { param , body} = require('express-validator');
 const { validateResult } = require('./validateResult');
 
 const validateProductId = [
-    param('id')
+    param('idProduct')
     .isMongoId(),
     (req,res,next) => {validateResult(req,res,next)}
 

@@ -20,22 +20,32 @@ exports.newCarrito = async (req,res)=>{
 }
 
 exports.showCarrito = async (req,res)=>{
+    console.log('nasje')
     res.status(200).send(await db.getAll())
-}
+} 
 
 exports.productDeleteById = async(req,res) =>{
     const id = req.params.id;
-    await db.deleteById(id);
-    res.status(200).json({message:"Se borro el carrito"});
+    try{
+        await db.deleteById(id);
+        res.status(200).json({message:"Se borro el carrito"});
+    }
+    catch{
+        res.status(403).json({message:"ID MAL INGRESADO"});
+    }
 }
 
 exports.showProductFromCarrito = async (req,res) =>{
     // agarra un carrito y te devuelvo los productos
     const id =req.params.id;
     console.log(id);
-    const carrito = await db.getById(id
-        );
-    res.status(200).send(carrito.products);
+    try{
+        const carrito = await db.getById(id);
+        res.status(200).send(carrito.products);
+    }
+    catch(e){
+        res.status(403).json({message:"error"});
+    }
 }
 
 exports.newProductFromCarrito = async (req,res) =>{
@@ -47,6 +57,7 @@ exports.newProductFromCarrito = async (req,res) =>{
     carrito.products.push(product);
     await db.updateById(id,carrito);
     res.status(200).json({message:"Se cargo el nuevo producto en el carrito"});
+
 }
 
 exports.updateProductFromCarrito = async(req,res) =>{

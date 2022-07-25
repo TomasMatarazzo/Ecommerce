@@ -5,7 +5,6 @@
 const {validationResult} = require('express-validator')
 const validateResult = (req,res,next) =>{
     try{ // uso la funcion de express validator que checkea si hubo un error
-        console.log('hia')
         validationResult(req).throw()
         console.log('no hubo error');
         next()
