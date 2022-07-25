@@ -13,7 +13,7 @@ const db = new ContenedorFirebase();
 
 exports.newCarrito = async (req,res)=>{
     const carrito = new Carrito();
-    await db.addElement(carrito);
+    await db.addElement(carrito.toFirestore());
     let cant = await db.getAll();
     cant = cant.length - 1;
     res.status(200).json({id:cant});

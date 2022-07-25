@@ -12,6 +12,14 @@ class Carrito{
         this.products.push(product);
     }
 
+    toFirestore = () =>{
+        return {
+            timestamp: this.timestamp,
+            products: this.products.map( product => product)
+        }
+    }
+
+    fromFirestore = () =>{}
     
 }
 
