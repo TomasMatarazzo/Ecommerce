@@ -12,13 +12,13 @@ exports.getProducts = async (req,res)=>{
     console.log('nashe')
     const products = await db.getAll();
     console.log(products)
-    res.status(200).send(products);
+    res.send(products);
 }
 
 exports.getProductById = async (req,res) =>{
-    const id = req.params.id;
+    const id = req.params.idProduct;
     const product = await db.getById(id);
-    res.status(200).send(product)
+    res.send(product)
 }
 
 exports.addProduct = async (req,res) =>{
@@ -27,23 +27,23 @@ exports.addProduct = async (req,res) =>{
     const product = new Product(name,description,code,url,price,stock);
     console.log(product);
     await db.addElement(product)
-    res.status(200).json({message:"Se cargo el nuevo producto"});
+    res.json({message:"Se cargo el nuevo producto"});
 }
 
 exports.updateProduct = async(req,res) =>{
     //falta validacion
-    const id = req.params.id;
+    const id = req.params.idProduct;
     const { name,description,code,url,price,stock } = req.body;
     const product = new Product(name,description,code,url,price,stock);
     await db.updateById(id,product);
-    res.status(200).json({message:"Se actualizo el producto"});
+    res.json({message:"Se actualizo el producto"});
     //obtengo elemento por el id
     // paso nuevo objecto como parametro y lo agrego;
 }
 
 exports.deleteProduct = async(req,res) =>{
-    const id = req.params.id;
+    const id = req.params.idProduct;
     await db.deleteBy(id);
-    res.status(200).json({message:"Se borro el producto"});
+    res.json({message:"Se borro el producto"});
     // paso el id como parametro y lo borro a su puta madre
 }
