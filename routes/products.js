@@ -10,4 +10,4 @@ Router.get('/:idProduct',validateProductId,productController.getProductById);
 Router.put('/:idProduct',validateProductId, validateProductBody,productController.updateProduct); // checkear si funciona este
 Router.delete('/:idProduct',validateProductId, productController.updateProduct);
 
-module.exports = Router;
+module.exports = Router; 
