@@ -16,12 +16,10 @@ class ContenedorMongoDB{
             const newProduct = new this.modelo(o)
             //const newProduct = new Product(o);
             await newProduct.save();
-            console.log('se agrego el elementto')
             return newProduct._id.toString()
 
         }
         catch(e){
-            console.log('No se pudo grabar el objeto',e);
             return null
         }
     }
@@ -36,19 +34,11 @@ class ContenedorMongoDB{
    updateById(id , product){
         // busco elemento a eliminar y vuelvo a reescribir el archivo.
         this.modelo.findByIdAndUpdate(id,product, function(err, result){
-
-            if(err){
-                console.log(err)
-            }
-            else{
-                console.log('Se actualizo el elemento')
-            }
         })
     }
 
     async getAll(){
         const elementos = await this.modelo.find({})
-        console.log(elementos)
         return elementos
     }
  
@@ -57,12 +47,6 @@ class ContenedorMongoDB{
         // si no esta el id se reescribe la misma informacion
         this.modelo.findByIdAndRemove(id,function(err, result){
 
-            if(err){
-                console.log('No se borro nada')
-            }
-            else{
-                console.log('Se borro')
-            }
         })
 
     }

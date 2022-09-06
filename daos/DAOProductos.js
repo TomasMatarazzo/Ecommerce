@@ -5,9 +5,8 @@ const ContenedorMongoDB = require('../contenedores/ContenedorMongo')
 class DAOProductos extends ContenedorMongoDB{
 
     constructor(){
-        const password = 'm001-mongodb-basics';
+        const password = process.env.MONGO_PASSWORD;
         const mongoDB = 'mongodb+srv://m001-student:' + password + '@sandbox.azv9a.mongodb.net/?retryWrites=true&w=majority';
-        console.log(mongoDB);
         super(mongoDB , Product);
     }
 }

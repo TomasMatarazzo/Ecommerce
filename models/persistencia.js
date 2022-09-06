@@ -21,11 +21,9 @@ class Persistencia{
             o.id = ++newId;
             objects.push(o);
             await fs.promises.writeFile(this.file,JSON.stringify(objects));
-            console.log(`Se grabo el objeto con el id ${o.id}\n`)
             return o.id;
         }
         catch(e){
-            console.log('No se pudo grabar el objeto',e);
             return null
         }
     }
@@ -41,7 +39,6 @@ class Persistencia{
 
     async updateById(id , product){
         // busco elemento a eliminar y vuelvo a reescribir el archivo.
-            console.log(product)
             await this.deleteById(id);
             const newObjects = await this.getAll();
             product.id = id;// le agrego el id anterior al nuevo producto
@@ -56,7 +53,7 @@ class Persistencia{
 
         }
         catch(e){
-            console.log('Error a la hora de abrir el archivo' , e)
+            throw new Error
         }
     }
 
@@ -69,7 +66,7 @@ class Persistencia{
             await fs.promises.writeFile(this.file,JSON.stringify(newObjects));
         }
         catch(e){
-            console.log('Error a la hora de eliminar por id',e)
+            throw new Error
         }
     }
 
@@ -79,7 +76,7 @@ class Persistencia{
             await fs.promises.writeFile(this.file,' ')
         }
         catch(e){
-            console.log('No se pudo eliminar los objectos del archivo',e)
+            throw new Error
         }
         //esta funcion para eliminar completamente el archivo
         //await fs.promises.unlink(this.file)

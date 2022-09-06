@@ -10,5 +10,5 @@ Router.delete('/:id', validateCarritoId ,carritoController.productDeleteById);
 Router.get('/:id/products',validateCarritoId, carritoController.showProductFromCarrito);
 Router.post('/:id/products', validateCarritoId, validateProductBody,carritoController.updateProductFromCarrito);
 Router.delete('/:id/products/:idProduct',validateCarritoId,validateProductId,validateProductBody,carritoController.deleteProductFromCarrito);
-
+Router.post('/:id/products/:idProduct', carritoController.newProductFromCarrito);
 module.exports = Router;

@@ -14,7 +14,6 @@ passport.use('signup' , new localStrategy({
     passwordField: 'password'
 }, async(email, password, done) =>{
     try{
-        console.log(email)
         const user = await User.create({email,password})
         return done(null, user)
     }catch(e){
@@ -44,16 +43,16 @@ passport.use('login' , new localStrategy({
      
         
     }catch(e){
+        console.log('hubo un error')
         return done(e)
     }
 }))
 
 passport.use( new JWTStrategy({
-    secretOrKey: 'top_secret', //.env
+    secretOrKey: process.env.JWT_KEY,
     jwtFromRequest : ExtractJWT.fromUrlQueryParameter('secret_token')
 }, async(token, done) =>{
     try{
-        console.log('hola')
         return done(null, token.user)
     }catch(e){
         done(e)

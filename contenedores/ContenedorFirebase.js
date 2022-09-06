@@ -38,7 +38,7 @@ class ContenedorFirebase{
             await this.collection.doc(id).update(o)
         }
         catch(e){
-            console.log(e)
+            throw new Error
         }
     }
 
@@ -52,7 +52,6 @@ class ContenedorFirebase{
                     products: doc.data().products
                 });
           });
-          console.log(elementos)
         return elementos
     }
  

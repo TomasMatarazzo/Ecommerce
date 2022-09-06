@@ -4,14 +4,19 @@
 
 const Persistencia = require('../models/persistencia.js');
 const Carrito = require('../models/carrito.js');
-const Product = require('../models/product.js');
+const Product = require('../models/Producto.js');
+const User = require('../models/User.js')
 const ContenedorFirebase = require('../daos/DAOCarrito')
+const jwt = require('jsonwebtoken')
+const log4js = require('log4js')
+const logger = log4js.getLogger('/api/carrito');
 
 var path = require('path');
 
 const db = new ContenedorFirebase();
 
 exports.newCarrito = async (req,res)=>{
+    logger.info('get create carrito')
     const carrito = new Carrito();
     await db.addElement(carrito.toFirestore());
     let cant = await db.getAll();
@@ -20,11 +25,12 @@ exports.newCarrito = async (req,res)=>{
 }
 
 exports.showCarrito = async (req,res)=>{
-    console.log('nasje')
+    logger.info('get show carrito')
     res.send(await db.getAll())
 } 
 
 exports.productDeleteById = async(req,res) =>{
+    logger.info('route = /:id DELETE ')
     const id = req.params.id;
     try{
         await db.deleteById(id);
@@ -38,7 +44,6 @@ exports.productDeleteById = async(req,res) =>{
 exports.showProductFromCarrito = async (req,res) =>{
     // agarra un carrito y te devuelvo los productos
     const id =req.params.id;
-    console.log(id);
     try{
         const carrito = await db.getById(id);
         res.send(carrito.products);
@@ -50,14 +55,35 @@ exports.showProductFromCarrito = async (req,res) =>{
 
 exports.newProductFromCarrito = async (req,res) =>{
     //falta validacion;
-    const id = req.params.id;
-    const { name,description,code,url,price,stock } = req.body;
-    const product = new Product(name,description,code,url,price,stock);
-    const carrito = await db.getById(id);
-    carrito.products.push(product);
-    await db.updateById(id,carrito);
-    res.json({message:"Se cargo el nuevo producto en el carrito"});
+    // Agregamos al carrito del usuario un producto ya existente
+    logger.info('route = /:id/products/:idProduct POST ')
+    const productId = req.params.idProduct 
 
+    const token = getTokenFrom(req)
+    const decodedToken = jwt.verify(token,process.env.JWT_KEY)
+    const userId = decodedToken.user._id
+    if (!token || !userId) {
+      return res.status(401).json({ error: 'token missing or invalid' })
+    }
+    const user = await User.findById(userId)
+
+
+    const product = await Product.findById(productId)
+    // validar el id del producto
+    user.cart = user.cart.concat(productId)
+    await user.save()
+ 
+    res.json(user)
+    //res.json({message:"Se cargo el nuevo producto en el carrito"});
+
+}
+
+const getTokenFrom = req => {
+    const authorization = req.get('authorization')
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+      return authorization.substring(7)
+    } 
+    return null
 }
 
 exports.updateProductFromCarrito = async(req,res) =>{

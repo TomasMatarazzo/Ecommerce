@@ -1,8 +1,14 @@
 const express = require('express');
+require('dotenv').config()
 require('./auth')
-const app = express();
 
+const app = express();
 const PORT = 8080;
+
+const log4js = require('log4js')
+const logConfig = require('./config/logger')
+log4js.configure(logConfig)
+const logger = log4js.getLogger('');
 
 const productsRouter = require('./routes/products.js');
 const carritosRouter = require('./routes/carrito.js');
@@ -15,7 +21,7 @@ app.use(bp.urlencoded({ extended: true }))
 app.use('/api/products',productsRouter);
 app.use('/api/carrito',carritosRouter);
 app.use('/api/auth', authRouter);
-
+ 
 
 
 app.get('/', (req, res) => {
@@ -24,5 +30,5 @@ app.get('/', (req, res) => {
 
   
 app.listen(PORT, () => {
-    console.log(`app listening on port ${PORT}`)
+    logger.info('Arranco el servidor en el puerto ' + PORT)
 })
