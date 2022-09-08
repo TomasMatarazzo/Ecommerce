@@ -29,9 +29,7 @@ exports.addProduct = async (req,res) =>{
     //falta validacion;
     logger.info('route = / POST')
     const { name,description,code,url,price,stock ,id,category} = req.body;
-    console.log(id,category)
     const product = new Product({name,description,code,url,price,stock,id,category});
-    console.log(product)
     await db.addElement(product)
     res.json({message:"Se cargo el nuevo producto"});
 }

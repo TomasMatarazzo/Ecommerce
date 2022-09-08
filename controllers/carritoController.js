@@ -31,7 +31,6 @@ exports.addProductToCarrito = async (req,res)=>{
     // Validacion del token
     logger.info('route = /:idProduct POST ')
     let productId = req.params.idProduct 
-    console.log(productId)
     const token = getTokenFrom(req)
     const decodedToken = jwt.verify(token,process.env.JWT_KEY)
     const userId = decodedToken.user._id
@@ -69,35 +68,28 @@ exports.addProductToCarrito = async (req,res)=>{
 exports.deleteProductFromCarrito = async (req,res)=>{
 
     // Validacion de token
-    logger.info('route = /:idProduct POST ')
-    console.log(req.params)
-    console.log('acaaaaaaaaaaaaaaaa')
-    // const productId = req.params.idProduct 
-    // console.log(productId)
-    // const token = getTokenFrom(req)
-    // const decodedToken = jwt.verify(token,process.env.JWT_KEY)
-    // console.log('aca')
-    // const userId = decodedToken.user._id
-    // if (!token || !userId) {
-    //   return res.status(401).json({ error: 'token missing or invalid' })
-    // }
-  //   console.log('aqui9')
-  //   // Verificamos si se encuentra repetido
-  //   const user = await User.findById(userId) 
-  //   id2 = mongoose.mongo.ObjectId(productId)
+    logger.info('route = /:idProduct DELETE ')
+    const productId = req.params.idProduct 
+    const token = getTokenFrom(req)
+    const decodedToken = jwt.verify(token,process.env.JWT_KEY)
+    const userId = decodedToken.user._id
+    if (!token || !userId) {
+      return res.status(401).json({ error: 'token missing or invalid' })
+    }
 
-  //   // Lo que hago aca es restarle al producto la cantidad de 1 si coincide con el id,
-  //   // luego si esa cantidad es de 0 lo elimino.
-  //   prueba = user.cart.map( (item)=> {
-  //       newItem = {...newObject,quantity: --item[0].quantity }
-  //       newItem = new Product(newItem)
-  //       console.log(newItem)
-  //       return item[0].id == id2 ? newItem: item})
-  //   prueba = prueba.filter( item[0].quantity !== 0)
-  //   user.cart = prueba
+    // Lo que hago aca es restarle al producto le resto 1 a su cantidad si coincide con el id,
+    // luego si esa cantidad es de 0 lo elimino.
+    const user = await User.findById(userId)
+    prueba = user.cart.map( (item)=> {
+        newItem = {...item,quantity: --item[0].quantity }
+        newItem = new Product(newItem)
+        console.log(newItem)
+        return item[0].id == productId ? newItem: item})
+    prueba = prueba.filter( item[0].quantity !== 0)
+    user.cart = prueba
 
-  // await user.save()
-  // res.json(user) 
+  await user.save()
+  res.json(user) 
 } 
 
 // exports.showCarrito = async (req,res)=>{

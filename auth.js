@@ -44,7 +44,7 @@ passport.use('login' , new localStrategy({
      
         
     }catch(e){
-        console.log('hubo un error')
+        ('hubo un error')
         return done(e)
     }
 }))
