@@ -37,6 +37,6 @@ app.get('/', (req, res) => {
   })
 
   
-app.listen(PORT, () => {
+app.listen(process.env.PORT || 5050, () => {
     logger.info('Arranco el servidor en el puerto ' + PORT)
 })
