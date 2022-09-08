@@ -11,10 +11,12 @@ const ExtractJWT = require('passport-jwt').ExtractJwt
 
 passport.use('signup' , new localStrategy({
     usernameField: 'email',
-    passwordField: 'password'
-}, async(email, password, done) =>{
+    passwordField: 'password',
+    passReqToCallback: true
+}, async(req,email, password, done) =>{
     try{
-        const user = await User.create({email,password})
+        const {direccion , nombre, edad, numero} = req.body
+        const user = await User.create(req.body)
         return done(null, user)
     }catch(e){
         return done(e)
@@ -33,12 +35,11 @@ passport.use('login' , new localStrategy({
         const user = await User.findOne({email})
         if (!user)
             return done(null, false , {message:"Usuario no existente"}) // no se encontro el mail
-         
+        
         const validate = await user.comparePassword(password)
-
-        if (!validate)
+        if (!validate){
             return done(null, false , {message:"Contrasena incorrecta"}) 
-
+        }
         return done(null, user , {message:"Login exitoso"})
      
         

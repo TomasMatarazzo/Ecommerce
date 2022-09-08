@@ -13,10 +13,26 @@ const UserSchema = new Schema(
             type:String,
             required:true
         },
+        direccion:{
+            type:String,
+            required:true
+        },
+        edad:{
+            type:String,
+            required:true
+        },
+        numero:{
+            type: Number,
+            required:true
+        },
+        nombre:{
+            type: String,
+            required:true
+        },
         cart:[
             {
-                type: mongoose.Schema.Types.ObjectId,
-                ref:'Product'
+                type: Array,
+                default:[]
             }
         ]
     }
@@ -40,7 +56,10 @@ UserSchema.pre('save', async function(next){
 
 UserSchema.methods.comparePassword = async function (password){
     const user = this
+    console.log(user.password)
+    console.log(password)
     const compare = await bcrypt.compare(password, user.password)
+    console.log(compare)
     return compare
 }
 
