@@ -8,6 +8,7 @@ const logger = log4js.getLogger('error');
 const {validationResult} = require('express-validator')
 const validateResult = (req,res,next) =>{
     try{ // uso la funcion de express validator que checkea si hubo un error
+        console.log(req.body)
         validationResult(req).throw()
         next()
     }

@@ -30,25 +30,26 @@ exports.addProductToCarrito = async (req,res)=>{
 
     // Validacion del token
     logger.info('route = /:idProduct POST ')
-    const productId = req.params.idProduct 
+    let productId = req.params.idProduct 
+    console.log(productId)
     const token = getTokenFrom(req)
     const decodedToken = jwt.verify(token,process.env.JWT_KEY)
     const userId = decodedToken.user._id
     if (!token || !userId) {
       return res.status(401).json({ error: 'token missing or invalid' })
     }
-
     // Creamos objeto a agregar
     const user = await User.findById(userId) 
-    const producto = await Product.findById(productId)
-    const {timestamp,name,description,code,image,price,stock} = producto
-    newObject = {timestamp,name,description,code,image,price,stock}
+    productId = parseInt(productId)
+    const producto = await Product.find({id:productId })
+    const {name,description,price,category} = producto[0]
+    newObject = {name , description,price,category}
     newObject = {...newObject, quantity:1 ,id: productId}
 
-    id2 = mongoose.mongo.ObjectId(productId)
+    //id2 = mongoose.mongo.ObjectId(productId)
 
     // Verificamos si es objeto repetido o no
-    isRepeated = user.cart.find(item =>item[0].id == id2 )
+    isRepeated = user.cart.find(item =>item[0].id == productId )
     if (!isRepeated){
       const obj = new Product(newObject)
       user.cart = user.cart.concat(obj)
@@ -57,8 +58,7 @@ exports.addProductToCarrito = async (req,res)=>{
       prueba = user.cart.map( (item)=> {
         newItem = {...newObject,quantity: ++item[0].quantity }
         newItem = new Product(newItem)
-        console.log(newItem)
-        return item[0].id == id2 ? newItem: item})
+        return item[0].id == productId ? newItem: item})
       user.cart = prueba
     }
 
@@ -70,30 +70,34 @@ exports.deleteProductFromCarrito = async (req,res)=>{
 
     // Validacion de token
     logger.info('route = /:idProduct POST ')
-    const productId = req.params.idProduct 
-    const token = getTokenFrom(req)
-    const decodedToken = jwt.verify(token,process.env.JWT_KEY)
-    const userId = decodedToken.user._id
-    if (!token || !userId) {
-      return res.status(401).json({ error: 'token missing or invalid' })
-    }
+    console.log(req.params)
+    console.log('acaaaaaaaaaaaaaaaa')
+    // const productId = req.params.idProduct 
+    // console.log(productId)
+    // const token = getTokenFrom(req)
+    // const decodedToken = jwt.verify(token,process.env.JWT_KEY)
+    // console.log('aca')
+    // const userId = decodedToken.user._id
+    // if (!token || !userId) {
+    //   return res.status(401).json({ error: 'token missing or invalid' })
+    // }
+  //   console.log('aqui9')
+  //   // Verificamos si se encuentra repetido
+  //   const user = await User.findById(userId) 
+  //   id2 = mongoose.mongo.ObjectId(productId)
 
-    // Verificamos si se encuentra repetido
-    const user = await User.findById(userId) 
-    id2 = mongoose.mongo.ObjectId(productId)
+  //   // Lo que hago aca es restarle al producto la cantidad de 1 si coincide con el id,
+  //   // luego si esa cantidad es de 0 lo elimino.
+  //   prueba = user.cart.map( (item)=> {
+  //       newItem = {...newObject,quantity: --item[0].quantity }
+  //       newItem = new Product(newItem)
+  //       console.log(newItem)
+  //       return item[0].id == id2 ? newItem: item})
+  //   prueba = prueba.filter( item[0].quantity !== 0)
+  //   user.cart = prueba
 
-    // Lo que hago aca es restarle al producto la cantidad de 1 si coincide con el id,
-    // luego si esa cantidad es de 0 lo elimino.
-    prueba = user.cart.map( (item)=> {
-        newItem = {...newObject,quantity: --item[0].quantity }
-        newItem = new Product(newItem)
-        console.log(newItem)
-        return item[0].id == id2 ? newItem: item})
-    prueba = prueba.filter( item[0].quantity !== 0)
-    user.cart = prueba
-
-  await user.save()
-  res.json(user) 
+  // await user.save()
+  // res.json(user) 
 } 
 
 // exports.showCarrito = async (req,res)=>{

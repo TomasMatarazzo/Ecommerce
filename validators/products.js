@@ -23,6 +23,10 @@ const validateProductBody = [
     body('stock')
         .optional()
         .isNumeric(),
+    body('id')
+        .isNumeric(),
+    body('category')
+        .isNumeric(),
     (req,res,next) =>{ validateResult(req,res,next)}
 
 ]

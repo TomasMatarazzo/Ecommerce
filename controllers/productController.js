@@ -1,7 +1,7 @@
 // A diferencia de los ejercicios anteriores aplicamos una capa de abstraccion
 // Cuando nos comunicamos con el modelo no accedemos a sus atributos directamente
 // si no que lo hacemos mediante funciones.
-const Product = require('../models/product.js');
+const Product = require('../models/Producto.js');
 const DAOProductos = require('../daos/DAOProductos.js');
 
 const jwt = require('jsonwebtoken')
@@ -15,7 +15,7 @@ const db = new DAOProductos('a');
 exports.getProducts = async (req,res)=>{
     logger.info('route = / GET')
     const products = await db.getAll();
-    res.send(products);
+    res.send(products); 
 }
 
 exports.getProductById = async (req,res) =>{
@@ -28,8 +28,10 @@ exports.getProductById = async (req,res) =>{
 exports.addProduct = async (req,res) =>{
     //falta validacion;
     logger.info('route = / POST')
-    const { name,description,code,url,price,stock } = req.body;
-    const product = new Product(name,description,code,url,price,stock);
+    const { name,description,code,url,price,stock ,id,category} = req.body;
+    console.log(id,category)
+    const product = new Product({name,description,code,url,price,stock,id,category});
+    console.log(product)
     await db.addElement(product)
     res.json({message:"Se cargo el nuevo producto"});
 }

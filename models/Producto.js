@@ -10,8 +10,9 @@ const ProductSchema = new Schema({
     ,image:{ type: String}
     ,price :{ type: Number}
     ,stock :{ type: Number}
-    ,quantity:{type: Number},
-    id:{type: String}
+    ,quantity:{type: Number}
+    ,category:{type: Number},
+    id:{type: Number}
 
 })
 
