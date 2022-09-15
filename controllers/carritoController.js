@@ -17,26 +17,14 @@ var path = require('path');
 
 const db = new ContenedorFirebase();
 
-const getTokenFrom = req => {
-    authorization = req.body.headers.Authorization
-    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-      return authorization.substring(7)
-    } 
-    return null
-}
+exports.show = async(req,res) =>{
 
+  res.json({message:'se nashe'})
+}
 exports.addProductToCarrito = async (req,res)=>{
 
-
-    // Validacion del token
-    logger.info('route = /:idProduct POST ')
+    const userId = req.user._id
     let productId = req.params.idProduct 
-    const token = getTokenFrom(req)
-    const decodedToken = jwt.verify(token,process.env.JWT_KEY)
-    const userId = decodedToken.user._id
-    if (!token || !userId) {
-      return res.status(401).json({ error: 'token missing or invalid' })
-    }
     // Creamos objeto a agregar
     const user = await User.findById(userId) 
     productId = parseInt(productId)
@@ -60,22 +48,18 @@ exports.addProductToCarrito = async (req,res)=>{
         return item[0].id == productId ? newItem: item})
       user.cart = prueba
     }
-
   await user.save()
-  res.json(user) 
+  const userCopy = JSON.parse(JSON.stringify(user))
+  delete userCopy.password
+  res.json(userCopy) 
 } 
 
 exports.deleteProductFromCarrito = async (req,res)=>{
 
     // Validacion de token
     logger.info('route = /:idProduct DELETE ')
-    const productId = req.params.idProduct 
-    const token = getTokenFrom(req)
-    const decodedToken = jwt.verify(token,process.env.JWT_KEY)
-    const userId = decodedToken.user._id
-    if (!token || !userId) {
-      return res.status(401).json({ error: 'token missing or invalid' })
-    }
+    const userId = req.user._id
+    let productId = req.params.idProduct 
 
     // Lo que hago aca es restarle al producto le resto 1 a su cantidad si coincide con el id,
     // luego si esa cantidad es de 0 lo elimino.
@@ -83,13 +67,14 @@ exports.deleteProductFromCarrito = async (req,res)=>{
     prueba = user.cart.map( (item)=> {
         newItem = {...item,quantity: --item[0].quantity }
         newItem = new Product(newItem)
-        console.log(newItem)
         return item[0].id == productId ? newItem: item})
     prueba = prueba.filter( item[0].quantity !== 0)
     user.cart = prueba
 
   await user.save()
-  res.json(user) 
+  const userCopy = JSON.parse(JSON.stringify(user))
+  delete userCopy.password
+  res.json(userCopy) 
 } 
 
 // exports.showCarrito = async (req,res)=>{
@@ -98,7 +83,7 @@ exports.deleteProductFromCarrito = async (req,res)=>{
 // } 
 
 // exports.productDeleteById = async(req,res) =>{
-//     logger.info('route = /:id DELETE ')
+//     logger.info('route = /:id DELETE ') 
 //     const id = req.params.id;
 //     try{
 //         await db.deleteById(id);

@@ -13,7 +13,7 @@ const validateResult = (req,res,next) =>{
     }
     catch(error){ // error.array() devuelve los errores obtenidos.
         logger.error('Error a la hora de la validacion')
-        res.status(403)
+        res.status(400)
         res.send({errors: error.array()}) 
     }
 }

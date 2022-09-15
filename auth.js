@@ -51,12 +51,12 @@ passport.use('login' , new localStrategy({
 
 passport.use( new JWTStrategy({
     secretOrKey: process.env.JWT_KEY,
-    jwtFromRequest : ExtractJWT.fromUrlQueryParameter('secret_token')
+    jwtFromRequest : ExtractJWT.fromAuthHeaderAsBearerToken()
 }, async(token, done) =>{
     try{
         return done(null, token.user)
     }catch(e){
         done(e)
     }
-}))
+})) 
 

@@ -29,8 +29,6 @@ app.use('/api/carrito',carritosRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/ordenes', ordenesRouter);
 
- 
-
 
 app.get('/', (req, res) => {
     res.send('hola')
@@ -40,3 +38,4 @@ app.get('/', (req, res) => {
 app.listen(process.env.PORT || 5050, () => {
     logger.info('Arranco el servidor en el puerto ' + PORT)
 })
+  

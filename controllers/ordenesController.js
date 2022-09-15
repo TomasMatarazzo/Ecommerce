@@ -8,22 +8,8 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 
-const getTokenFrom = req => {
-    authorization = req.body.headers.Authorization
-    if (authorization && authorization.toLowerCase().startsWith('bearer')) {
-      return authorization.substring(7) 
-    } 
-    return null 
-}
-
 exports.createOrden = async function(req,res){
-    const token = getTokenFrom(req)
-    const decodedToken = jwt.verify(token,process.env.JWT_KEY)
-    const userId = decodedToken.user._id 
-    if (!token || !userId) {
-      return res.status(401).json({ error: 'token missing or invalid' })
-    }
-
+    const userId = req.user._id 
     const user = await User.findById(userId) 
     let compras = []
     user.cart.forEach( (item)=>{
