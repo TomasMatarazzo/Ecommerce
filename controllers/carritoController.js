@@ -2,8 +2,8 @@
 // Cuando nos comunicamos con el modelo no accedemos a sus atributos directamente
 // si no que lo hacemos mediante funciones.
 
-const Persistencia = require('../models/persistencia.js');
-const Carrito = require('../models/carrito.js');
+const Persistencia = require('../daos/persistencia.js');
+const Carrito = require('../daos/DAOCarritoFirestore.js');
 const Product = require('../models/Producto.js');
 const User = require('../models/User.js')
 const DAOCarrito = require('../daos/DAOCarrito')

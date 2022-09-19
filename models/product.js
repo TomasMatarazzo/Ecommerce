@@ -1,4 +1,4 @@
-const Persistencia = require('./persistencia.js');
+const Persistencia = require('../daos/persistencia.js');
 
 class Product{
     constructor(name,description,code,imageUrl,price, stock){

@@ -1,4 +1,4 @@
-const Product = require('./product.js');
+const Product = require('../models/product.js');
 const Persistencia = require('./persistencia.js');
 
 class Carrito{
