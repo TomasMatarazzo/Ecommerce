@@ -6,7 +6,7 @@ const Persistencia = require('../models/persistencia.js');
 const Carrito = require('../models/carrito.js');
 const Product = require('../models/Producto.js');
 const User = require('../models/User.js')
-const ContenedorFirebase = require('../daos/DAOCarrito')
+const DAOCarrito = require('../daos/DAOCarrito')
 const jwt = require('jsonwebtoken')
 const log4js = require('log4js')
 const logger = log4js.getLogger('/api/carrito');
@@ -15,66 +15,79 @@ const { ObjectId } = require( 'mongoose');
 
 var path = require('path');
 
-const db = new ContenedorFirebase();
+const db = new DAOCarrito();
 
 exports.show = async(req,res) =>{
 
   res.json({message:'se nashe'})
 }
+
+//devuelve el id del nuevo carrito
+
+exports.createCarrito = async(req,res) =>{
+  // uso contenedor de mongo carrito
+  // creo carrito vacio.
+  let userId = req.user._id
+  const carrito = {
+    userId: userId,
+    timestamp: Date.now(),
+    products: []
+  }
+  const id = await db.addElement(carrito);
+  res.json({id:id})
+}
+
 exports.addProductToCarrito = async (req,res)=>{
 
-    const userId = req.user._id
-    let productId = req.params.idProduct 
+    let carritoId = req.params.id
+    let productId = parseInt(req.params.idProduct) 
     // Creamos objeto a agregar
-    const user = await User.findById(userId) 
-    productId = parseInt(productId)
-    const producto = await Product.find({id:productId })
+    const producto = await Product.find({id:productId})
+    const carrito = await db.getById(carritoId)
     const {name,description,price,category} = producto[0]
-    newObject = {name , description,price,category}
+    newObject = {name,description,price,category}
     newObject = {...newObject, quantity:1 ,id: productId}
+    let productos = carrito.products
 
-    //id2 = mongoose.mongo.ObjectId(productId)
-
-    // Verificamos si es objeto repetido o no
-    isRepeated = user.cart.find(item =>item[0].id == productId )
+    isRepeated = productos.find(item =>item.id == productId)
     if (!isRepeated){
-      const obj = new Product(newObject)
-      user.cart = user.cart.concat(obj)
+      const product = new Product(newObject)
+      productos.push(product)
     }
     else{
-      prueba = user.cart.map( (item)=> {
-        newItem = {...newObject,quantity: ++item[0].quantity }
+      console.log('no es repetido')
+      productos = productos.map( (item)=> {
+        newItem = {...newObject,quantity: ++item.quantity }
         newItem = new Product(newItem)
-        return item[0].id == productId ? newItem: item})
-      user.cart = prueba
+        return item.id == productId ? newItem: item})
+      //user.cart = prueba
     }
-  await user.save()
-  const userCopy = JSON.parse(JSON.stringify(user))
-  delete userCopy.password
-  res.json(userCopy) 
+  db.updateById(carritoId,{products:productos})
+  res.json({message:"hola"}) 
 } 
 
 exports.deleteProductFromCarrito = async (req,res)=>{
 
     // Validacion de token
     logger.info('route = /:idProduct DELETE ')
-    const userId = req.user._id
-    let productId = req.params.idProduct 
+    
+    const carritoId = req.params.id
+    let productId = parseInt(req.params.idProduct) 
 
-    // Lo que hago aca es restarle al producto le resto 1 a su cantidad si coincide con el id,
-    // luego si esa cantidad es de 0 lo elimino.
-    const user = await User.findById(userId)
-    prueba = user.cart.map( (item)=> {
-        newItem = {...item,quantity: --item[0].quantity }
+    const carrito = await db.getById(carritoId)
+    let products = carrito.products
+    products = products.map( item => {
+        newItem = {...item}
+        newItem.quantity--
         newItem = new Product(newItem)
-        return item[0].id == productId ? newItem: item})
-    prueba = prueba.filter( item[0].quantity !== 0)
-    user.cart = prueba
-
-  await user.save()
-  const userCopy = JSON.parse(JSON.stringify(user))
-  delete userCopy.password
-  res.json(userCopy) 
+        return item.id === productId ? newItem: item
+      })
+    products = products.filter( (item) => item.quantity !== 0)
+    db.updateById(carritoId,{products})
+  // await user.save()
+  // const userCopy = JSON.parse(JSON.stringify(user))
+  // delete userCopy.password
+    res.json({message:'se resolvio muy bien'}) 
 } 
 
 // exports.showCarrito = async (req,res)=>{

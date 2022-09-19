@@ -1,12 +1,14 @@
 
-const ContenedorFirebase = require('../contenedores/ContenedorFirebase')
-const serviceAccount = require("../ecommerce-be1d1-firebase-adminsdk-gyi0f-9019de578c.json");
+const carrito = require('../models/Carritos');
+const ContenedorMongoDB = require('../contenedores/ContenedorMongo')
 
-class DAOCarrito extends ContenedorFirebase{
+class DAOCarritos extends ContenedorMongoDB{
 
     constructor(){
-        super(serviceAccount);
+        const password = process.env.MONGO_PASSWORD;
+        const mongoDB = 'mongodb+srv://m001-student:' + password + '@sandbox.azv9a.mongodb.net/?retryWrites=true&w=majority';
+        super(mongoDB , carrito);
     }
 }
 
-module.exports = DAOCarrito;
+module.exports = DAOCarritos;
