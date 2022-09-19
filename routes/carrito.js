@@ -8,7 +8,7 @@ const passport = require('passport')
 Router.post('/',passport.authenticate('jwt', { session: false }), carritoController.createCarrito)
 Router.post('/show', passport.authenticate('jwt', { session: false }), carritoController.show);
 Router.post('/:id/productos/:idProduct',passport.authenticate('jwt', { session: false }), carritoController.addProductToCarrito);
-Router.delete('/:id/productos/:idProduct',passport.authenticate('jwt', { session: false }),scarritoController.deleteProductFromCarrito);
+Router.delete('/:id/productos/:idProduct',passport.authenticate('jwt', { session: false }),carritoController.deleteProductFromCarrito);
 // Router.get('/',carritoController.showCarrito);
 // Router.get('/:id/products',validateCarritoId, carritoController.showProductFromCarrito);
 // Router.post('/:id/products', validateCarritoId, validateProductBody,carritoController.updateProductFromCarrito);
