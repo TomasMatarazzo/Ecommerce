@@ -1,8 +1,8 @@
 
 const carrito = require('../models/Carritos');
-const ContenedorMongoDB = require('../contenedores/ContenedorMongo')
+const DAOMongoDB = require('./DAOMongo')
 
-class DAOCarritos extends ContenedorMongoDB{
+class DAOCarritos extends DAOMongoDB{
 
     constructor(){
         const password = process.env.MONGO_PASSWORD;

@@ -8,7 +8,7 @@ const validateProductId = [
 
 ]
 
-const validateProductBody = [
+const validateProductBody = [ 
     body('name')
         .exists(),
     body('description')

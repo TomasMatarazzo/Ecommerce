@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 // Contenedor que agrega documentos de tipo producto a la base de datos pasada como parametro
-class ContenedorMongoDB{ 
+class DAOMongoDB{ 
 
     constructor(mongoDBUrl ,modelo){
         mongoose.connect(mongoDBUrl, {useNewUrlParser: true, useUnifiedTopology: true})
@@ -40,6 +40,8 @@ class ContenedorMongoDB{
 
     async getAll(){
         const elementos = await this.modelo.find({})
+        console.log('los elementos son')
+        console.log(elementos)
         return elementos
     }
  
@@ -60,4 +62,4 @@ class ContenedorMongoDB{
     }
 }
 
-module.exports = ContenedorMongoDB;
+module.exports = DAOMongoDB;

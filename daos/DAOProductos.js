@@ -1,8 +1,8 @@
 
 const Product = require('../models/Producto');
-const ContenedorMongoDB = require('../contenedores/ContenedorMongo')
+const DAOMongoDB = require('./DAOMongo')
 
-class DAOProductos extends ContenedorMongoDB{
+class DAOProductos extends DAOMongoDB{
 
     constructor(){
         const password = process.env.MONGO_PASSWORD;

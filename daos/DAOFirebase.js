@@ -1,7 +1,7 @@
 var admin = require("firebase-admin");
 // Contenedor que agrega documentos de tipo producto a la base de datos pasada como parametro
 
-class ContenedorFirebase{
+class DAOFirebase{
 
     constructor(ServiceAccount){
 
@@ -80,4 +80,4 @@ class ContenedorFirebase{
     }
 }
 
-module.exports = ContenedorFirebase;
+module.exports = DAOFirebase;

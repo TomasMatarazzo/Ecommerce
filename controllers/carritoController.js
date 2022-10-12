@@ -12,82 +12,43 @@ const log4js = require('log4js')
 const logger = log4js.getLogger('/api/carrito');
 const mongoose = require('mongoose')
 const { ObjectId } = require( 'mongoose');
+const ApiCarrito = require('../negocio/apiCarrito')
 
 var path = require('path');
 
-const db = new DAOCarrito();
+const apiCarrito = new ApiCarrito();
 
 exports.show = async(req,res) =>{
-
   res.json({message:'se nashe'})
 }
 
 //devuelve el id del nuevo carrito
 
 exports.createCarrito = async(req,res) =>{
-  // uso contenedor de mongo carrito
   // creo carrito vacio.
   let userId = req.user._id
-  const carrito = {
-    userId: userId,
-    timestamp: Date.now(),
-    products: []
-  }
-  const id = await db.addElement(carrito);
+  const id = await apiCarrito.createCarrito(userId);
   res.json({id:id})
 }
 
 exports.addProductToCarrito = async (req,res)=>{
-
     let carritoId = req.params.id
     let productId = parseInt(req.params.idProduct) 
-    // Creamos objeto a agregar
-    const producto = await Product.find({id:productId})
-    const carrito = await db.getById(carritoId)
-    const {name,description,price,category} = producto[0]
-    newObject = {name,description,price,category}
-    newObject = {...newObject, quantity:1 ,id: productId}
-    let productos = carrito.products
-
-    isRepeated = productos.find(item =>item.id == productId)
-    if (!isRepeated){
-      const product = new Product(newObject)
-      productos.push(product)
-    }
-    else{
-      console.log('no es repetido')
-      productos = productos.map( (item)=> {
-        newItem = {...newObject,quantity: ++item.quantity }
-        newItem = new Product(newItem)
-        return item.id == productId ? newItem: item})
-      //user.cart = prueba
-    }
-  db.updateById(carritoId,{products:productos})
-  res.json({message:"hola"}) 
+    await apiCarrito.addProductToCarrito(productId,carritoId)
+    res.json({message:"Se agrego el nuevo producto al carrito"}) 
 } 
 
 exports.deleteProductFromCarrito = async (req,res)=>{
 
     // Validacion de token
     logger.info('route = /:idProduct DELETE ')
-    
     const carritoId = req.params.id
     let productId = parseInt(req.params.idProduct) 
-
-    const carrito = await db.getById(carritoId)
-    let products = carrito.products
-    products = products.map( item => {
-        newItem = {...item}
-        newItem.quantity--
-        newItem = new Product(newItem)
-        return item.id === productId ? newItem: item
-      })
-    products = products.filter( (item) => item.quantity !== 0)
-    db.updateById(carritoId,{products})
+    await apiCarrito.deleteProductFromProducto(productId,carritoId)
+    res.json({message:'Se borro un producto'})
   // await user.save()
   // const userCopy = JSON.parse(JSON.stringify(user))
   // delete userCopy.password
-    res.json({message:'se resolvio muy bien'}) 
 } 
 
 // exports.showCarrito = async (req,res)=>{
