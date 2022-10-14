@@ -14,9 +14,6 @@ class ApiProductos{
         return products;
     }
 
-    async getById(id){
-        return this.dao.getById(id)
-    }
 
     async addProduct(name,description,code,url,price,stock,id,category){
         const product = new Product({name,description,code,url,price,stock,id,category});

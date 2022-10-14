@@ -16,6 +16,8 @@ class DAOMongoDB{
             const newProduct = new this.modelo(o)
             //const newProduct = new Product(o);
             await newProduct.save();
+            console.log(o)
+            console.log('el nuevo producto es')
             console.log(newProduct)
             return newProduct._id.toString()
 

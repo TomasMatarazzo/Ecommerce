@@ -5,15 +5,15 @@ const OrdenSchema = new Schema(
     {
         cart:[
             {
-                type: mongoose.Schema.Types.ObjectId,
-                ref:'Product'
+                type: Array,
+                default:[]
             }
         ],
         nro:{
-            type:String,
+            type:Number,
         },
         fecha:{
-            type:String,
+            type:Number,
         },
         estado:{
             type:String,
