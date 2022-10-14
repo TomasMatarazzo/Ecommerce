@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken')
 
 const log4js = require('log4js')
 const logger = log4js.getLogger('error');
+const ApiCarrito = require('../negocio/apiCarrito')
+const apiCarrito = new ApiCarrito()
 
 exports.login = async function(req,res,next){
     passport.authenticate('login', async(err,user,info) =>{
@@ -31,6 +33,7 @@ exports.login = async function(req,res,next){
 
 exports.signup = async function(req,res,next){ 
     logger.info('Signup successfull')
+    apiCarrito.createCarrito()
     res.json({
         message: 'Signup successfull'
     })

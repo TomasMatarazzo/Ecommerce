@@ -6,6 +6,8 @@ const User = require('./models/User')
 
 const JWTStrategy = require('passport-jwt').Strategy
 const ExtractJWT = require('passport-jwt').ExtractJwt
+const ApiCarrito = require('./negocio/apiCarrito')
+const apiCarrito = new ApiCarrito()
 
 // Registro de usuarios nuevos
 
@@ -17,6 +19,8 @@ passport.use('signup' , new localStrategy({
     try{
         const {direccion , nombre, edad, numero} = req.body
         const user = await User.create(req.body)
+        // creo carrito asociado con el id del usuario
+        apiCarrito.createCarrito(user._id.valueOf())
         return done(null, user)
     }catch(e){
         return done(e)

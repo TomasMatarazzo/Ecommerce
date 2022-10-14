@@ -1,5 +1,6 @@
 const DAOCarrito = require('../daos/DAOCarrito')
 const Carrito = require('../daos/DAOCarritoFirestore.js');
+const Product = require('../models/Producto')
 
 class ApiCarrito{
 
@@ -20,13 +21,14 @@ class ApiCarrito{
     async addProductToCarrito(productId , carritoId){
         // Creamos objeto a agregar
         const producto = await Product.find({id:productId})
-        const carrito = await db.getById(carritoId)
+        const carrito = await this.getCarrito(carritoId)
+        console.log(carrito)
         const {name,description,price,category} = producto[0]
-        newObject = {name,description,price,category}
+        let newObject = {name,description,price,category}
         newObject = {...newObject, quantity:1 ,id: productId}
         let productos = carrito.products
     
-        isRepeated = productos.find(item =>item.id == productId)
+        let isRepeated = productos.find(item =>item.id == productId)
         if (!isRepeated){
           const product = new Product(newObject)
           productos.push(product)
@@ -34,19 +36,21 @@ class ApiCarrito{
         else{
           console.log('no es repetido')
           productos = productos.map( (item)=> {
-            newItem = {...newObject,quantity: ++item.quantity }
+            let newItem = {...newObject,quantity: ++item.quantity }
             newItem = new Product(newItem)
             return item.id == productId ? newItem: item})
           //user.cart = prueba
         }
-      this.dao.updateById(carritoId,{products:productos})
+      carrito.products = productos
+      console.log(carrito.products)
+      await carrito.save()
     }
 
-    async deleteProductFromProducto(productId, carritoId){
+    async deleteProductFromCarrito(productId, carritoId){
         const carrito = await this.dao.getById(carritoId)
         let products = carrito.products
         products = products.map( item => {
-            newItem = {...item}
+            let newItem = {...item}
             newItem.quantity--
             newItem = new Product(newItem)
             return item.id === productId ? newItem: item
@@ -58,19 +62,12 @@ class ApiCarrito{
         return this.dao.getById(id)
     }
 
-    async addProduct(name,description,code,url,price,stock,id,category){
-        const product = new Product({name,description,code,url,price,stock,id,category});
-        await this.dao.addElement(product)
+    async getCarrito(userId){
+        const carrito = await this.dao.getCarrito(userId)
+        return carrito
     }
 
-    async updateProduct(name,description,code,url,price,stock,id){
-        const product = new Product(name,description,code,url,price,stock);
-        await this.dao.updateById(id,product);
-    }
 
-    async deleteProduct(id){
-        await this.dao.deleteById(id);
-    }
 
 }
 

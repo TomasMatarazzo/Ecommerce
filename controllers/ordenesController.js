@@ -7,16 +7,20 @@ const Orden = require('../models/orden')
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
+const ApiCarrito = require('../negocio/apiCarrito')
+const apiCarrito = new ApiCarrito()
 
 exports.createOrden = async function(req,res){
+    // NO ES NECESARIO PARA EL ID YA QUE SE ENCUENTRA EN EL TOKEN.
     const userId = req.user._id 
-    const user = await User.findById(userId) 
+    let carrito = await apiCarrito.getCarrito(userId)
+    let user = await User.findById(userId) 
     let compras = []
-    user.cart.forEach( (item)=>{
-        compras.push(item[0])
+    carrito.products.forEach( (item)=>{
+        compras.push(item)
     })
-    fecha = new Date()
-    const orden = {compras, direccion: user.direccion , fecha: fecha.getDate()}
+    //fecha = new Date()
+    const orden = {compras, direccion: user.direccion , fecha: Date.now()}
     
 
     client.messages.create({

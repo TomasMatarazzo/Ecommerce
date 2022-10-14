@@ -24,8 +24,6 @@ class DAOMongoDB{
             return null
         }
     }
-
-
     
     async getById(id){
         const element = await this.modelo.findById(id);

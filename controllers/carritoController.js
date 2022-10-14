@@ -32,8 +32,10 @@ exports.createCarrito = async(req,res) =>{
 }
 
 exports.addProductToCarrito = async (req,res)=>{
-    let carritoId = req.params.id
+    let carritoId = req.user._id
+    console.log(carritoId)
     let productId = parseInt(req.params.idProduct) 
+    console.log(productId)
     await apiCarrito.addProductToCarrito(productId,carritoId)
     res.json({message:"Se agrego el nuevo producto al carrito"}) 
 } 
@@ -44,7 +46,7 @@ exports.deleteProductFromCarrito = async (req,res)=>{
     logger.info('route = /:idProduct DELETE ')
     const carritoId = req.params.id
     let productId = parseInt(req.params.idProduct) 
-    await apiCarrito.deleteProductFromProducto(productId,carritoId)
+    await apiCarrito.deleteProductFrom(productId,carritoId)
     res.json({message:'Se borro un producto'})
   // await user.save()
   // const userCopy = JSON.parse(JSON.stringify(user))
