@@ -1,5 +1,3 @@
-const Persistencia = require('../daos/persistencia.js');
-
 class Product{
     constructor(name,description,code,imageUrl,price, stock){
         this.timestamp = Date.now();

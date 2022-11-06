@@ -1,8 +1,4 @@
-const jwt = require('jsonwebtoken')
-const log4js = require('log4js')
-const logger = log4js.getLogger('error');
 const User = require('../models/User.js')
-const Orden = require('../models/orden')
 const ApiCarrito = require('../negocio/apiCarrito')
 const apiCarrito = new ApiCarrito()
 const ApiOrdenes = require('../negocio/apiOrdenes')
@@ -18,11 +14,8 @@ exports.createOrden = async function(req,res){
     carrito.products.forEach( (item)=>{
         compras.push(item)
     })
-    
-    await apiOrdenes.newOrden(compras,1,'matarazzo')
-    res.send('orden realizada')
-    // creo la orden y mando mensaje y listo
-     
-
-    // Solo puedo crear la orden si el usuario esta logueado
+    let carritoString = compras.reduce( (acum , product) => acum +`Producto: ${product.name}\nCantidad: ${product.quantity}\n`, "")
+    await apiOrdenes.carritoToString(req.user._id , carritoString)
+    await apiOrdenes.newOrden(compras,1,'matarazzo') 
+    await apiOrdenes.avisarWpp(req.user._id,carritoString)
 }

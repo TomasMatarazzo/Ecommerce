@@ -1,6 +1,3 @@
-const Product = require('../models/product.js');
-const Persistencia = require('./persistencia.js');
-
 class Carrito{
 
     constructor(){

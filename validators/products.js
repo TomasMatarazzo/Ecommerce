@@ -3,7 +3,7 @@ const { validateResult } = require('./validateResult');
 
 const validateProductId = [
     param('idProduct')
-    .isMongoId(),
+    .isDecimal(),
     (req,res,next) => {validateResult(req,res,next)}
 
 ]

@@ -1,9 +1,7 @@
 // Middlewares para realizar la autenticacion
-
 const passport = require('passport')
 const localStrategy = require('passport-local').Strategy
 const User = require('./models/User')
-
 const JWTStrategy = require('passport-jwt').Strategy
 const ExtractJWT = require('passport-jwt').ExtractJwt
 const ApiCarrito = require('./negocio/apiCarrito')
@@ -52,9 +50,9 @@ passport.use('login' , new localStrategy({
         return done(e)
     }
 }))
-
+ 
 passport.use( new JWTStrategy({
-    secretOrKey: process.env.JWT_KEY,
+    secretOrKey: process.env.JWT_KEY || 'top_secret',
     jwtFromRequest : ExtractJWT.fromAuthHeaderAsBearerToken()
 }, async(token, done) =>{
     try{

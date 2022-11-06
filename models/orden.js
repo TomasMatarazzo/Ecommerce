@@ -3,12 +3,10 @@ const Schema = mongoose.Schema
 
 const OrdenSchema = new Schema(
     {
-        cart:[
+        cart:
             {
                 type: Array,
-                default:[]
-            }
-        ],
+            },
         nro:{
             type:Number,
         },

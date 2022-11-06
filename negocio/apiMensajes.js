@@ -1,15 +1,21 @@
-const DAOProductos = require('../daos/DAOProductos.js');
+const DAOMensajes = require('../daos/DAOMensajes.js');
 const Product = require('../models/Producto.js');
 
-class ApiProductos{
+class ApiMensajes{
 
     constructor(){
-        this.dao = new DAOProductos('a')
+        this.dao = new DAOMensajes('a')
     }
 
-    async getProducts(){
-        const products = await this.dao.getAll()
-        return products;
+    async agregarMensaje( email,mensaje){
+        this.dao.addElement({email,mensaje})
+        const mensajes = await this.dao.getAll()
+        return mensajes;
+    }
+
+    async obtenerMensajes(){
+        const mensajes = await this.dao.getAll()
+        return mensajes
     }
 
 
@@ -48,4 +54,4 @@ class ApiProductos{
 
 }
 
-module.exports = ApiProductos;
+module.exports = ApiMensajes;

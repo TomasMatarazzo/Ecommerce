@@ -1,5 +1,4 @@
 const DAOCarrito = require('../daos/DAOCarrito')
-const Carrito = require('../daos/DAOCarritoFirestore.js');
 const Product = require('../models/Producto')
 
 class ApiCarrito{

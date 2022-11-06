@@ -14,11 +14,7 @@ class DAOMongoDB{
         // tengo en cuenta el caso de que es el primer elemento del archivo
         try{
             const newProduct = new this.modelo(o)
-            //const newProduct = new Product(o);
             await newProduct.save();
-            console.log(o)
-            console.log('el nuevo producto es')
-            console.log(newProduct)
             return newProduct._id.toString()
 
         }
@@ -40,8 +36,6 @@ class DAOMongoDB{
 
     async getAll(){
         const elementos = await this.modelo.find({})
-        console.log('los elementos son')
-        console.log(elementos)
         return elementos
     }
  

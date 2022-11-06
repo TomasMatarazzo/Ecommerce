@@ -6,6 +6,7 @@ const productController = require('../controllers/productController');
 
 Router.get('/',productController.getProducts);
 Router.post('/', validateProductBody ,productController.addProduct);
+Router.get('/category/:id', productController.getProductByCategory)
 Router.get('/:idProduct',validateProductId,productController.getProductById);
 Router.put('/:idProduct',validateProductId, validateProductBody,productController.updateProduct); // checkear si funciona este
 Router.delete('/:idProduct',validateProductId, productController.updateProduct);

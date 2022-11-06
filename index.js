@@ -1,12 +1,11 @@
 const express = require('express');
-require('dotenv').config()
-require('./auth')
-
+console.log(process.env.NODE_ENV)
+const path = require('path')
+require('dotenv').config({ path:path.resolve(__dirname, './.env.' + process.env.NODE_ENV  ) })
+require('./auth') 
 const cors = require('cors')
-
-
-const app = express();
-const PORT = 8080;
+const app = express(); 
+const server = require('http').createServer(app)
 
 const log4js = require('log4js')
 const logConfig = require('./config/logger')
@@ -29,13 +28,24 @@ app.use('/api/carrito',carritosRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/ordenes', ordenesRouter);
 
-
-app.get('/', (req, res) => {
-    res.send('hola')
-  })
-
-  
-app.listen(process.env.PORT || 5050, () => {
-    logger.info('Arranco el servidor en el puerto ' + PORT)
+server.listen(process.env.PORT || 5050, () => {
+  logger.info('Arranco el servidor en el puerto ' + process.env.PORT)
 })
-  
+
+
+// CHAT CON SOCKETS
+
+const io = require('socket.io')(server, {cors:{origin:'http://localhost:3000'}})
+const ApiMensajes = require('./negocio/apiMensajes')
+const apiMensajes = new ApiMensajes()
+
+io.on('connection', async (socket)=>{
+  let mensajes = await apiMensajes.obtenerMensajes()
+
+  socket.on('agregar', async (data)=>{
+    apiMensajes.agregarMensaje(data.email, data.mensaje)
+    let mensajes = await apiMensajes.obtenerMensajes()
+    socket.emit('chat', mensajes)
+  })
+})
+
