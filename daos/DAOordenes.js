@@ -11,4 +11,4 @@ class DAOordenes extends DAOMongoDB{
     }
 }
 
-module.exports = DAOordenes;
+module.exports = DAOOrdenes;
