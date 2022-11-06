@@ -28,8 +28,8 @@ app.use('/api/carrito',carritosRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/ordenes', ordenesRouter);
 
-server.listen(process.env.PORT || 5050, () => {
-  logger.info('Arranco el servidor en el puerto ' + process.env.PORT)
+server.listen(process.env.PORT || 8000, () => {
+  logger.info('Arranco el servidor en el puerto ')
 })
 
 
