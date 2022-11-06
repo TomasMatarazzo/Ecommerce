@@ -1,5 +1,5 @@
 
-const orden = require('../models/Orden.js');
+const orden = require('../models/orden.js');
 const DAOMongoDB = require('./DAOMongo.js')
 
 class DAOordenes extends DAOMongoDB{
