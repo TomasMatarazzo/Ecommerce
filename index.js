@@ -1,8 +1,8 @@
 const express = require('express');
 console.log(process.env.NODE_ENV)
-const path = require('path')
-require('dotenv').config({ path:path.resolve(__dirname, './.env.' + process.env.NODE_ENV  ) })
+require('dotenv').config()
 require('./auth') 
+
 const cors = require('cors')
 const app = express(); 
 const server = require('http').createServer(app)
