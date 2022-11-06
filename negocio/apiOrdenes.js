@@ -1,4 +1,4 @@
-const DAOOrdenes = require('../daos/DAOOrdenes.js')
+const DAOOrdenes = require('../daos/DAOordenes.js')
 const DAOUser= require('../daos/DAOUser.js')
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;

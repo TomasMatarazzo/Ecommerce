@@ -2,7 +2,7 @@
 const orden = require('../models/Orden.js');
 const DAOMongoDB = require('./DAOMongo.js')
 
-class DAOOrdenes extends DAOMongoDB{
+class DAOordenes extends DAOMongoDB{
 
     constructor(){
         const password = process.env.MONGO_PASSWORD;
@@ -11,4 +11,4 @@ class DAOOrdenes extends DAOMongoDB{
     }
 }
 
-module.exports = DAOOrdenes;
+module.exports = DAOordenes;
