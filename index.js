@@ -1,5 +1,4 @@
 const express = require('express');
-console.log(process.env.NODE_ENV)
 require('dotenv').config()
 require('./auth') 
 

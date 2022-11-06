@@ -1,5 +1,6 @@
-const DAOOrdenes = require('../daos/DAOOrdenes')
-const DAOUser= require('../daos/DAOUser')
+const DAOOrdenes = require('../daos/DAOOrdenes.js')
+const DAOUser= require('../daos/DAOUser.js')
+
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 console.log(authToken)

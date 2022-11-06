@@ -2,7 +2,7 @@ const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const log4js = require('log4js')
 const logger = log4js.getLogger('error');
-const ApiCarrito = require('../negocio/apiCarrito')
+const ApiCarrito = require('../negocio/apiCarrito.js')
 const apiCarrito = new ApiCarrito()
 
 exports.login = async function(req,res,next){

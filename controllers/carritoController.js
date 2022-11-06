@@ -1,6 +1,6 @@
 const log4js = require('log4js')
-const logger = log4js.getLogger('/api/carrito');
-const ApiCarrito = require('../negocio/apiCarrito')
+const logger = log4js.getLogger('/api/carrito.js');
+const ApiCarrito = require('../negocio/apiCarrito.js')
 const apiCarrito = new ApiCarrito();
 
 exports.show = async(req,res) =>{

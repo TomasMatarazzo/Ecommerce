@@ -1,5 +1,5 @@
-const DAOCarrito = require('../daos/DAOCarrito')
-const Product = require('../models/Producto')
+const DAOCarrito = require('../daos/DAOCarrito.js')
+const Product = require('../models/Producto.js')
 
 class ApiCarrito{
 
