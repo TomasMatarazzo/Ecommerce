@@ -40,7 +40,7 @@ const apiMensajes = new ApiMensajes()
 
 io.on('connection', async (socket)=>{
   let mensajes = await apiMensajes.obtenerMensajes()
-
+  socket.emit('chat', mensajes)
   socket.on('agregar', async (data)=>{
     apiMensajes.agregarMensaje(data.email, data.mensaje)
     let mensajes = await apiMensajes.obtenerMensajes()

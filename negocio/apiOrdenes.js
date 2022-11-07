@@ -3,7 +3,6 @@ const DAOUser= require('../daos/DAOUser.js')
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
-console.log(authToken)
 const client = require('twilio')(accountSid, authToken);
 
 class ApiOrdenes{
@@ -26,6 +25,8 @@ class ApiOrdenes{
     async avisarWpp(userId, compras){
         let {numero} = await this.daoUser.getById(userId)
         let wpp = `whatsapp:+549${numero}`
+        console.log(wpp)
+        console.log('mensajeito')
         let body = 'Gracias por confiar en nosotros \n Su pedido : \n' + compras
         client.messages.create({
             from: 'whatsapp:+14155238886',

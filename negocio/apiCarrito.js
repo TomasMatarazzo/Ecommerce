@@ -1,7 +1,7 @@
 const DAOCarrito = require('../daos/DAOCarrito.js')
 const Product = require('../models/Producto.js')
 
-class ApiCarrito{
+class ApiCarrito{  
 
     constructor(){
         this.dao = new DAOCarrito()
